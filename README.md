@@ -11,12 +11,18 @@ The notebook loads the [Quran Tafseer RAG Dataset](https://huggingface.co/datase
 3. Compares three chunking methods:
    - Fixed chunking
    - Recursive chunking
-   - Token-based splitting
+   - Token-based splitting with `TokenTextSplitter`
 4. Generates embeddings with `NAMAA-Space/AraModernBert-Base-STS`.
 5. Performs similarity search over the embedded chunks.
 6. Builds an Arabic RAG prompt from retrieved passages.
 7. Generates an answer with `microsoft/Phi-4-mini-instruct`.
 8. Serves a small Gradio interface for asking tafseer questions.
+
+## Chunking Detail
+
+For token-based chunking, the notebook uses LangChain's `TokenTextSplitter` with `encoding_name="cl100k_base"`. This tokenizer encoding comes from OpenAI's `tiktoken` package and is listed in the tiktoken model mapping for model families such as `gpt-4` and `gpt-3.5-turbo`.
+
+Reference: [OpenAI tiktoken model mapping](https://github.com/openai/tiktoken/blob/main/tiktoken/model.py)
 
 
 ## Dependencies
@@ -58,9 +64,3 @@ Example question:
 The screenshot below shows the Gradio app answering an Arabic tafseer question and displaying the retrieved source passages with similarity scores.
 
 ![Arabic Tafseer RAG output](images/rag_answer_screenshot.jpeg)
-
-## Notes
-
-- The notebook currently encodes chunks in memory, so model loading and embedding generation can take time.
-- `microsoft/Phi-4-mini-instruct` may require enough RAM or GPU memory depending on the runtime.
-- Retrieval quality can vary depending on the selected chunking method.
